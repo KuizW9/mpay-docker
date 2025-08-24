@@ -2,7 +2,7 @@ services:
   mysql:
     #image: mysql:5.7
     image: mariadb:focal
-    container_name: mysql
+    container_name: mpay_mysql
     environment:
       MYSQL_DATABASE: mpay                  # 数据库名称
       MYSQL_USER: mpay                      # 数据库用户名
@@ -14,7 +14,7 @@ services:
 
   web:
     image: ghcr.io/kuizw9/mpay-docker:latest
-    container_name: mpay
+    container_name: mpay_web
     ports:
       - "8080:80"
     restart: always
@@ -23,7 +23,7 @@ services:
 
   ofelia:
     image: mcuadros/ofelia
-    container_name: ofelia
+    container_name: mpay_ofelia
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config.ini:/etc/ofelia/config.ini
