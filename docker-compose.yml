@@ -1,0 +1,33 @@
+services:
+  mysql:
+    #image: mysql:5.7
+    image: mariadb:focal
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: mpay                  # 数据库名称
+      MYSQL_USER: mpay                      # 数据库用户名
+      MYSQL_PASSWORD: mpay7890              # 数据库密码
+      MYSQL_ROOT_PASSWORD: mpay7890         # 数据库root密码
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  web:
+    image: ghcr.io/kuizw9/mpay-docker:latest
+    container_name: mpay
+    ports:
+      - "8080:80"
+    restart: always
+    depends_on:
+      - mysql
+
+  ofelia:
+    image: mcuadros/ofelia
+    container_name: ofelia
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config.ini:/etc/ofelia/config.ini
+    restart: always
+    depends_on:
+      - mysql
+      - web
